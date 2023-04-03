@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/alate_interfaces/ament_cmake_core/alate_interfacesConfig.cmake

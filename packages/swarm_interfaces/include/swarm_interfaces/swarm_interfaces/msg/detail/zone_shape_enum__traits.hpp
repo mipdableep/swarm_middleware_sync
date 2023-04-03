@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/swarm_interfaces/rosidl_generator_cpp/swarm_interfaces/msg/detail/zone_shape_enum__traits.hpp

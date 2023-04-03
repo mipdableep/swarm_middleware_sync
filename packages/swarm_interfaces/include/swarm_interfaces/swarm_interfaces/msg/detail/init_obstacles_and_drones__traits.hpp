@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/swarm_interfaces/rosidl_generator_cpp/swarm_interfaces/msg/detail/init_obstacles_and_drones__traits.hpp

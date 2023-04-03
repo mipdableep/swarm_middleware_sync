@@ -1,0 +1,5 @@
+# Takes InitObstaclesAndDrones and returns ObstaclesAndDrones
+
+InitObstaclesAndDrones init_obstacles_and_drones
+---
+ObstaclesAndDrones obsticles_and_drones

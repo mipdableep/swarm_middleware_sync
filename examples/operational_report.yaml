@@ -1,0 +1,27 @@
+fail_id: 123456
+spraying: true
+found_target: false
+targets:
+  - fail_id: 111111
+    geo_point:
+      altitude: 1000.0
+      latitude: 37.7749
+      longitude: -122.4194
+    relative_point:
+      alt: 10
+      direction: 20
+      range: 30
+    type:
+      value: "X1"
+  - fail_id: 222222
+    geo_point:
+      altitude: 2000.0
+      latitude: 37.7749
+      longitude: -122.4194
+    relative_point:
+      alt: 40
+      direction: 50
+      range: 60
+    type:
+      value: "X2"
+tracking: true

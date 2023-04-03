@@ -1,0 +1,6 @@
+# Autopilot Service Interface
+
+AutopilotActionEnum action
+geometry_msgs/Twist twist
+---
+AutopilotStateEnum state

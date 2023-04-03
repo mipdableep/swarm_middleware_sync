@@ -1,0 +1,11 @@
+fail_id: 1
+location:
+  altitude: 3.0
+  latitude: 4.0
+  longitude: 4.0
+relative_to_origin:
+  alt: 5
+  direction: 6
+  range: 7
+navigation_quality:
+  value: 1

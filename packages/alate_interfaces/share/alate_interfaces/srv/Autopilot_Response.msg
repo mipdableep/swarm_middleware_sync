@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/alate_interfaces/rosidl_cmake/srv/Autopilot_Response.msg

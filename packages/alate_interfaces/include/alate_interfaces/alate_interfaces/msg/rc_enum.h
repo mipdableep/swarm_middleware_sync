@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/alate_interfaces/rosidl_generator_c/alate_interfaces/msg/rc_enum.h

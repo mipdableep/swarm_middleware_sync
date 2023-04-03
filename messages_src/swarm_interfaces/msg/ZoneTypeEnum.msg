@@ -1,0 +1,6 @@
+# Zone types enum
+
+string MISSION_ZONE = "MISSION_ZONE"
+string PRIORITY_ZONE = "PRIORITY_ZONE
+string FLIGHT_FORBIDDEN_ZONE = "FLIGHT_FORBIDDEN_ZONE"
+string value

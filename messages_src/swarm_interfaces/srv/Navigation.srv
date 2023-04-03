@@ -1,0 +1,5 @@
+# Takes InitNavigate and returns Navigation
+
+InitNavigate init_navigation
+---
+Navigation navigation

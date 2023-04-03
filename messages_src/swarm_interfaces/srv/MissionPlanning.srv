@@ -1,0 +1,5 @@
+# Takes Mission object and returns PlannedMission object
+
+Mission mission
+---
+PlannedMission planned_mission

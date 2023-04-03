@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/swarm_interfaces/rosidl_generator_py/swarm_interfaces/msg/_init_obstacles_and_drones.py

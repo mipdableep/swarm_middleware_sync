@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/swarm_interfaces/rosidl_generator_c/swarm_interfaces/msg/detail/init_navigate__functions.h

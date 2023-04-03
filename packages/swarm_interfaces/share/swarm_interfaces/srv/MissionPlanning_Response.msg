@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/swarm_interfaces/rosidl_cmake/srv/MissionPlanning_Response.msg

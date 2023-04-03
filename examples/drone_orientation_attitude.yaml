@@ -1,0 +1,22 @@
+abort: false
+camera_angles: 30
+camera_elevation: 0
+location:
+    altitude: 0
+    latitude: 1
+    longitude: 2
+fail_id: 0
+flight_altitude: 500
+flight_direction: 359
+sensor_type:
+      value: "DAY"
+speed: 10
+spray: false
+target_data:
+        - target_priority: 1
+          target_type:
+                value: "X1"
+        - target_priority: 0
+          target_type:
+                value: "X2"
+zoom: 2

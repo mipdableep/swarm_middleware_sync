@@ -1,0 +1,15 @@
+fail_id: 123456
+relative_drones_points:
+  - alt: 10
+    direction: 20
+    range: 30
+  - alt: 40
+    direction: 50
+    range: 60
+relative_obstacles_points:
+  - alt: 70
+    direction: 80
+    range: 90
+  - alt: 100
+    direction: 110
+    range: 120

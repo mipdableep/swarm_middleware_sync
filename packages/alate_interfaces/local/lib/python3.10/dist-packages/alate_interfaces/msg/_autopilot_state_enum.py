@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/alate_interfaces/rosidl_generator_py/alate_interfaces/msg/_autopilot_state_enum.py

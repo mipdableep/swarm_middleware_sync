@@ -1,0 +1,5 @@
+# Takes DroneOrientationAndAttitude and returns OperationalReport
+
+DroneOrientationAndAttitude drone_orientation_and_attitude
+---
+OperationalReport operational_report

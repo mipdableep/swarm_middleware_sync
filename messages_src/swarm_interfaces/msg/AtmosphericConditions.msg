@@ -1,0 +1,6 @@
+# Atmosphericall Conditions Message
+
+int64 atmospheric_attenuation_factor
+int64 target_contrast_percent
+int64 thermal_camera_temperature_difference_celsius
+int64 visibility_distance_meter

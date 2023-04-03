@@ -1,0 +1,1 @@
+docker run -it --rm -v $1:/swarm_middleware ros-alate 

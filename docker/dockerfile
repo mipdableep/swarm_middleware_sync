@@ -1,0 +1,17 @@
+# Use the latest version of Ubuntu as the base image
+FROM ubuntu:latest
+
+# Set the working directory to /swarm_middleware
+WORKDIR /swarm_middleware
+
+# Update the package list, upgrade installed packages, and install stuff
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    apt-get install -y bash libyaml-dev libyaml-cpp-dev libspdlog-dev libtinyxml2-dev
+
+RUN echo "source /swarm_middleware/setup.bash" >> ~/.bashrc
+
+# Set the default command to run the Bash terminal
+CMD ["bash"]

@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/swarm_interfaces/rosidl_typesupport_introspection_c/swarm_interfaces/msg/detail/init_obstacles_and_drones__rosidl_typesupport_introspection_c.h

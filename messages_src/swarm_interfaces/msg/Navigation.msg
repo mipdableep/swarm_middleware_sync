@@ -1,0 +1,6 @@
+# Navigation
+
+int64 fail_id
+GeoPoint location
+RelativePoint relative_to_origin
+NavigationQualityEnum navigation_quality

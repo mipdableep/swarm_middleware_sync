@@ -1,0 +1,3 @@
+# Initial Navigation data
+GeoPoint initial_location
+RelativePoint relative_to_origin

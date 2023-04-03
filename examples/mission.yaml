@@ -1,0 +1,81 @@
+atmospheric_conditions:
+  atmospheric_attenuation_factor: 50
+  target_contrast_percent: 60
+  thermal_camera_temperature_difference_celsius: 10
+  visibility_distance_meter: 500
+drones:
+  - drone_mission_duration: 120
+    drone_size:
+      size_x: 10
+      size_y: 20
+      size_z: 30
+    mission_type_support:
+      value: 1
+    payload_capability:
+      - max_distance: 200
+        fov: 80
+        max_altitude: 100
+        lens_focal_length: 25
+        sensor_use:
+          value: 2
+        sensor_pixel_pitch:
+          value: 1
+        sensor_resolution:
+          value: 2
+        target_size:
+          - size_x: 5
+            size_y: 10
+            target_name:
+              value: 1
+    number_of_drone: 2
+  - drone_mission_duration: 121
+    drone_size:
+      size_x: 10
+      size_y: 20
+      size_z: 30
+    mission_type_support:
+      value: 1
+    payload_capability:
+      - max_distance: 200
+        fov: 80
+        max_altitude: 100
+        lens_focal_length: 25
+        sensor_use:
+          value: 2
+        sensor_pixel_pitch:
+          value: 1
+        sensor_resolution:
+          value: 2
+        target_size:
+          - size_x: 5
+            size_y: 10
+            target_name:
+              value: 1
+    number_of_drone: 2
+initial_location:
+  altitude: 100.0
+  latitude: 35.0
+  longitude: -120.0
+mission_type:
+  value: 1
+target_data:
+  - target_priority: 1
+    target_type:
+      value: 1
+zones:
+  - alt_max: 150
+    alt_min: 100
+    end_time: 1200
+    geo_points:
+      - altitude: 100.0
+        latitude: 35.0
+        longitude: -120.0
+    relative_points:
+      - alt: 50
+        direction: 180
+        range: 100
+    start_time: 800
+    zone_shape:
+      value: 0
+    zone_type:
+      value: 0

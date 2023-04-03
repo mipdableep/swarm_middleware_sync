@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/swarm_interfaces/msg/AtmosphericConditions.msg

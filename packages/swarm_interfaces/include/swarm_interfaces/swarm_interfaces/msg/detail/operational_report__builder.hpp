@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/swarm_interfaces/rosidl_generator_cpp/swarm_interfaces/msg/detail/operational_report__builder.hpp

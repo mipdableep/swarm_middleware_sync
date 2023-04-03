@@ -1,0 +1,8 @@
+initial_location:
+      altitude: 0
+      latitude: 1
+      longitude: 2
+relative_to_origin:
+      alt: 0
+      direction: 359
+      range: 500

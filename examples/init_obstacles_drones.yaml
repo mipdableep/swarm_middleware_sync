@@ -1,0 +1,77 @@
+drones:
+  - drone_mission_duration: 100
+    drone_size:
+      size_x: 1
+      size_y: 2
+      size_z: 3
+    mission_type_support:
+      value: "SEARCH_AND_SPRAY"
+    payload_capability:
+      - max_distance: 100
+        fov: 30
+        max_altitude: 100
+        lens_focal_length: 10
+        payload_use:
+          value: "BELLY_SENSOR"
+        sensor_pixel_pitch:
+          value: "MICRO_M_3_POINT_5"
+        sensor_resolution:
+          value: "S320_240"
+        target_size:
+          - size_x: 1
+            size_y: 2
+            type_name:
+              value: "X1"
+          - size_x: 3
+            size_y: 4
+            type_name:
+              value: "X1"
+      - max_distance: 300
+        fov: 30
+        max_altitude: 100
+        lens_focal_length: 10
+        payload_use:
+          value: "BELLY_SENSOR"
+        sensor_pixel_pitch:
+          value: "MICRO_M_3_POINT_5"
+        sensor_resolution:
+          value: "S320_240"
+        target_size:
+          - size_x: 1
+            size_y: 2
+            type_name:
+              value: "X1"
+          - size_x: 3
+            size_y: 4
+            type_name:
+              value: "X1"
+    number_of_drone: 1
+
+  - drone_mission_duration: 200
+    drone_size:
+      size_x: 1
+      size_y: 2
+      size_z: 3
+    mission_type_support:
+      value: "MISSION_LIDAR_SENSOR"
+    payload_capability:
+      - max_distance: 100
+        fov: 30
+        max_altitude: 100
+        lens_focal_length: 10
+        payload_use:
+          value: "BELLY_SENSOR"
+        sensor_pixel_pitch:
+          value: "MICRO_M_3_POINT_5"
+        sensor_resolution:
+          value: "S320_240"
+        target_size:
+          - size_x: 1
+            size_y: 2
+            type_name:
+              value: "X2"
+          - size_x: 3
+            size_y: 4
+            type_name:
+              value: "X1"
+    number_of_drone: 42

@@ -1,0 +1,8 @@
+# A message class depicting 6 DOF velocity
+
+linear_x: 0.0
+linear_y: 1.0
+linear_z: 2.0
+pitch: 3.0
+roll: 4.0
+yaw: 5.0

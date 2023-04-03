@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/swarm_interfaces/rosidl_generator_c/swarm_interfaces/msg/rosidl_generator_c__visibility_control.h

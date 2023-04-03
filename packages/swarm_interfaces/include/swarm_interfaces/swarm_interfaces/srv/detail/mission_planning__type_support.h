@@ -1,0 +1,1 @@
+/home/pavel/dev/ros_alate/build/swarm_interfaces/rosidl_generator_c/swarm_interfaces/srv/detail/mission_planning__type_support.h

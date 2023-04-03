@@ -1,0 +1,11 @@
+# Autopilot Actions Enum msg
+
+int64 ACTION_SHUT_DOWN = 0
+int64 ACTION_ARM = 1
+int64 ACTION_TAKEOFF = 2
+int64 ACTION_LAND = 3
+int64 ACTION_TWIST = 4
+int64 ACTION_RTL = 5
+int64 ACTION_MANUAL_OVERRIDE = 6
+
+int64 value 
