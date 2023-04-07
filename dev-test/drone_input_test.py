@@ -18,5 +18,8 @@ for i in range(10):
     
     ret, frame = webcam.read()
     
+    while not ret:
+        ret, frame = webcam.read()
+    
     cv2.imwrite('./vid/' + str(i) + '.jpg', frame)
     sleep(0.5)

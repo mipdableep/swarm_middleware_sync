@@ -1,1 +1,1 @@
-docker run -it --rm -v $1:/swarm_middleware ros-alate 
+docker run -it --rm --net=host -v $1:/swarm_middleware ros-alate 
