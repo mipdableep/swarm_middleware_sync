@@ -1,0 +1,63 @@
+{
+    "global-config":
+    {
+        "webcam"       : false,
+        "cameraPort"   : 0,
+        "cameraString" : "udp://0.0.0.0:11111?overrun_nonfatal=1&fifo_size=5000",
+      
+        "imshow"     : true,
+        "save_video" : false,
+        "save_video_path":"/home/fares/rbd/projects/aruco_swarm/arucoSwarm/video_cap/",
+        
+        "do_ncli_command"  : true,
+        "send_takeoff"     : true,
+        
+        "runServer"        : false,
+        "serverHostIp"     :"10.3.141.188",
+        "serverPort"       : 9090,
+        
+        "rpi_connect_to_drone" : false,
+
+        "dist_forward"   : 70,
+        "turn_amount"    : 5,
+        "land_target_id" : 100,
+
+        "DEVICE":"webcam"
+    },
+
+    "drone-1":
+    {
+        "aruco_forward_id" : -1,
+        "aruco_back_id"    : -1,
+
+        
+        "DroneName": "drone-1",
+        "tello_conf_path":"/home/pi/arucoSwarm/tello_supllicants/drone1.conf",
+
+        "calibration_path": "./calib/tello_camera.yaml"
+    },
+
+    "drone-2":
+    {
+        "aruco_forward_id" : -1,
+        "aruco_back_id"    : -1,
+
+        
+        "DroneName": "drone-2",
+        "tello_conf_path":"/home/pi/arucoSwarm/tello_supllicants/drone2.conf",
+
+        "calibration_path": "./calib/tello_camera.yaml"
+    },
+
+    "drone-3":
+    {
+        "aruco_forward_id" : -1,
+        "aruco_back_id"    : -1,
+
+        
+        "DroneName": "drone-3",
+        "tello_conf_path":"/home/pi/arucoSwarm/tello_supllicants/drone3.conf",
+
+        "calibration_path": "./calib/tello_camera.yaml"
+    }
+}
