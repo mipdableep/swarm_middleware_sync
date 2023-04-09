@@ -23,7 +23,7 @@ void scanForward(aruco& detector, int arucoId, ctello::Tello& tello);
 
 // declare vars
 bool exitLoop = false;
-int turnAmount;
+int turn_amount;
 
 // declare commands
 std::string standStill = "rc 0 0 0 0";

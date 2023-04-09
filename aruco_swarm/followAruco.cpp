@@ -87,31 +87,20 @@ void searchArucoTargetThread(ctello::Tello& tello, aruco& detector, int ArucoTar
     }
 }
 
-void change_to_tello_wifi() {
-    std::cout<< "in: change_to_tello_wifi()" << std::endl;
-    const std::string kill_connection_cmd = "sudo killall wpa_supplicant";
-    const std::string connection_cmd =
-        "sudo wpa_supplicant -i wlan0 -B -c " + wpa_supplicant_tello_file_path;
-
-    std::system(kill_connection_cmd.c_str());
-    std::this_thread::sleep_for(2s);
-    std::system(connection_cmd.c_str());
-    std::this_thread::sleep_for(10s);
-}
 
 
 void scan360(aruco& detector, int arucoId, ctello::Tello& tello){
     std::cout<< "in: scan360()" << std::endl;
-    std::cout << "serching for aruco " << arucoId << std::endl;
+    std::cout << "searching for aruco " << arucoId << std::endl;
 
     bool runDetection = true;
     bool canContinue;
     std::thread detectAruco(
         [&] { ScanForAruco(detector, arucoId, runDetection, canContinue); });
 
-    std::string turnCommand = "cw " + std::to_string(360/turnAmount);
+    std::string turnCommand = "cw " + std::to_string(360/turn_amount);
 
-    for (int i = 0; i<turnAmount; i++){
+    for (int i = 0; i<turn_amount; i++){
         tello.SendCommand(turnCommand);
         usleep(4000000);
     }
@@ -122,7 +111,7 @@ void scan360(aruco& detector, int arucoId, ctello::Tello& tello){
     detectAruco.join();
 
     if (!canContinue && arucoId != -1) {
-        std::cout << "didnt detect aruco " << arucoId << ", landing!"
+        std::cout << "didn't detect aruco " << arucoId << ", landing!"
                   << std::endl;
 
         tello.SendCommand("down 100");
@@ -138,7 +127,7 @@ void scan360(aruco& detector, int arucoId, ctello::Tello& tello){
 
 void scanForward(aruco& detector, int arucoId, ctello::Tello& tello){
     std::cout<< "in: scanForward()" << std::endl;
-    std::cout << "serching for aruco " << arucoId << std::endl;
+    std::cout << "searching for aruco " << arucoId << std::endl;
 
     bool runDetection = true;
     bool canContinue;
@@ -162,7 +151,7 @@ void scanForward(aruco& detector, int arucoId, ctello::Tello& tello){
     detectAruco.join();
 
     if (!canContinue && arucoId != -1) {
-        std::cout << "didnt detect aruco " << arucoId << ", landing!"
+        std::cout << "didn't detect aruco " << arucoId << ", landing!"
                   << std::endl;
 
         tello.SendCommand("down 100");
@@ -192,16 +181,25 @@ void ScanForAruco(aruco& detector, int arucoId, bool& runDetection, bool& canCon
         canContinue = true;
     else {
         canContinue = false;
-        std::cout << "aruco wasent detected enugh" << std::endl;
+        std::cout << "aruco wasn't detected enough" << std::endl;
     }
 }
 
+void change_to_tello_wifi() {
+    std::cout<< "in: change_to_tello_wifi()" << std::endl;
+    const std::string kill_connection_cmd = "sudo killall wpa_supplicant";
+    const std::string connection_cmd =
+        "sudo wpa_supplicant -i wlan0 -B -c " + wpa_supplicant_tello_file_path;
 
+    std::system(kill_connection_cmd.c_str());
+    std::this_thread::sleep_for(2s);
+    std::system(connection_cmd.c_str());
+    std::this_thread::sleep_for(10s);
+}
 
 int main(int argc, char *argv[])
 {
-
-    std::ifstream config("../config.json");
+std::ifstream config("../config.json");
 
     nlohmann::json conf;
     config >> conf;
@@ -212,16 +210,18 @@ int main(int argc, char *argv[])
 
     //* drone number - for drone-config
     std::string DEVICE = conf[G]["DEVICE"];
-
+    
     // run settings
     bool send_takeoff  = conf[G]["send_takeoff"];
 
     // run vars
     int dist_forward   = conf[G]["dist_forward"];
-    int turn_amount    = conf[G]["turn_amount"];
-    int land_target_id = conf[G]["land_target"];
+    int land_target_id = conf[G]["land_target_id"];
 
-    forward = "forward " + std::to_string(dist_forward);
+    float currentMarkerSize = conf[G]["currentMarkerSize"];
+
+    turn_amount = conf[G]["turn_amount"];
+    forward     = "forward " + std::to_string(dist_forward);
 
     int aruco_forward_id = conf[DEVICE]["aruco_forward_id"];
     int aruco_back_id    = conf[DEVICE]["aruco_back_id"];
@@ -242,14 +242,14 @@ int main(int argc, char *argv[])
     int serverPort            = conf[G]["serverPort"];
     std::string serverHostIp  = conf[G]["serverHostIp"];
     bool rpi_connect_to_drone = conf[G]["rpi_connect_to_drone"];
-    bool do_ncli_command      = conf[G]["do_ncli_command"];
+    bool do_nmcli_command      = conf[G]["do_nmcli_command"];
 
     // calibration settings
     std::string yamlCalibrationPath = conf[DEVICE]["calibration_path"];
-
-    std::string droneName   = conf[DEVICE]["DroneName"];
-    float currentMarkerSize = conf[DEVICE]["currentMarkerSize"];
-    wpa_supplicant_tello_file_path = conf[DEVICE]["tello_conf_path"];
+    std::string droneName           = conf[DEVICE]["DroneName"];
+    
+    // tello conf path
+    wpa_supplicant_tello_file_path  = conf[DEVICE]["tello_conf_path"];
     
 
     // !start of drone part!
@@ -264,20 +264,22 @@ int main(int argc, char *argv[])
     if (!runServer && rpi_connect_to_drone)
         change_to_tello_wifi();
 
+    if (do_nmcli_command)
+        std::system(((std::string)"nmcli c up TELLO-9EE78B").c_str());
+
     ctello::Tello tello;
 
     tello.SendCommandWithResponse("streamon");
 
     sleep(2);
 
-    if (send_takeoff)
+    if (send_takeoff){
         tello.SendCommandWithResponse("takeoff");
+        tello.SendCommand("rc 0 0 0 0");
+        sleep(2);
+        tello.SendCommand("up 70");
+    }
 
-    tello.SendCommand("rc 0 0 0 0");
-    sleep(2);
-    tello.SendCommand("up 70");
-
-    
     aruco detector(yamlCalibrationPath, cameraString, currentMarkerSize);
     detector.imshowStream = do_imshow;
     
