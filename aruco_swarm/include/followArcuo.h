@@ -29,4 +29,5 @@ int turn_amount;
 std::string standStill = "rc 0 0 0 0";
 std::string forward;
 
+std::string PIPE_path;
 std::string wpa_supplicant_tello_file_path;

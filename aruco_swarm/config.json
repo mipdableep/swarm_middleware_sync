@@ -16,7 +16,7 @@
         "serverHostIp"     :"10.3.141.188",
         "serverPort"       : 9090,
         
-        "rpi_connect_to_drone" : false,
+        "rpi_connect_to_drone" : true,
 
         "dist_forward"   : 30,
         "turn_amount"    : 5,
@@ -24,6 +24,7 @@
 
         "currentMarkerSize" : 70,
 
+        "PIPE_path" : "../../PIPE",
         "DEVICE":"drone-3"
     },
 

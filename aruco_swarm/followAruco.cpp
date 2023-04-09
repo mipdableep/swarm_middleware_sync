@@ -187,13 +187,20 @@ void ScanForAruco(aruco& detector, int arucoId, bool& runDetection, bool& canCon
 
 void change_to_tello_wifi() {
     std::cout<< "in: change_to_tello_wifi()" << std::endl;
-    const std::string kill_connection_cmd = "sudo killall wpa_supplicant";
-    const std::string connection_cmd =
+    
+    std::string kill_connection_cmd = "sudo killall wpa_supplicant";
+    std::string connection_cmd =
         "sudo wpa_supplicant -i wlan0 -B -c " + wpa_supplicant_tello_file_path;
 
-    std::system(kill_connection_cmd.c_str());
+    std::ofstream fifo(PIPE_path.c_str());
+    if (!fifo){
+        std::cerr << "Failed to open named pipe" << std::endl; exit(EXIT_FAILURE);
+    }
+
+    fifo << kill_connection_cmd << std::endl;
     std::this_thread::sleep_for(2s);
-    std::system(connection_cmd.c_str());
+    fifo << connection_cmd << std::endl;
+    fifo.close();
     std::this_thread::sleep_for(10s);
 }
 
@@ -211,6 +218,8 @@ std::ifstream config("../config.json");
     //* drone number - for drone-config
     std::string DEVICE = conf[G]["DEVICE"];
     
+    // *PIPE
+    PIPE_path = conf[G]["PIPE_path"];
     // run settings
     bool send_takeoff  = conf[G]["send_takeoff"];
 
