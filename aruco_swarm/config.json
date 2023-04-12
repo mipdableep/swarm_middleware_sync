@@ -10,7 +10,7 @@
         "save_video_path":"/home/fares/rbd/projects/aruco_swarm/arucoSwarm/video_cap/",
         
         "do_nmcli_command" : false,
-        "send_takeoff"     : false,
+        "send_takeoff"     : true,
         
         "runServer"        : false,
         "serverHostIp"     :"10.3.141.188",
@@ -20,7 +20,7 @@
 
         "dist_forward"   : 30,
         "turn_amount"    : 5,
-        "land_target_id" : 100,
+        "land_target_id" : 0,
 
         "currentMarkerSize" : 70,
 

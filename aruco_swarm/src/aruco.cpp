@@ -121,7 +121,6 @@ void aruco::getMarkerIds(ros_alate::Node &user_api){
                     if (id == dr_id_1 || id == dr_id_2 || id == dr_id_3)
                     {
                         arucoDetected = true;
-                        std::cout<<"before"<<std::endl;
                         using ros_alate::InterfaceType;
                         using ros_alate::Node;
                         using ros_alate::QosSettings;
@@ -135,8 +134,7 @@ void aruco::getMarkerIds(ros_alate::Node &user_api){
                         user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback);
                         user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
                         user_api.advertise("obstacles_drones_t", msg.str());
-
-                        std::cout<<"after"<<std::endl;
+                        user_api.spinOnce();
                     }
                 }
             }

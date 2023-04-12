@@ -76,11 +76,11 @@ void searchArucoTargetThread(ctello::Tello& tello, aruco& detector, int ArucoTar
     if (targetDetected) {
         std::cout << "landing, object detected" << std::endl;
         
-        tello.SendCommand("up 80");
-        sleep(3);
         tello.SendCommand("down 200");
         sleep(3);
-        tello.SendCommand("cw 180");
+        tello.SendCommand("rc 0 0 0 90");
+        sleep(3);
+        tello.SendCommand("rc 0 0 0 90");
         sleep(3);
         tello.SendCommandWithResponse("land");
         //for green led
@@ -118,11 +118,8 @@ void scan360(aruco& detector, int arucoId, ctello::Tello& tello){
         std::cout << "didn't detect aruco " << arucoId << ", landing!"
                   << std::endl;
 
-        tello.SendCommand("down 100");
-        sleep(4);
-        tello.SendCommand("ccw 180");
-        sleep(4);
         tello.SendCommandWithResponse("land");
+        sleep(4);
 
         //for red led
         exit(2);
@@ -157,13 +154,9 @@ void scanForward(aruco& detector, int arucoId, ctello::Tello& tello){
     if (!canContinue && arucoId != -1) {
         std::cout << "didn't detect aruco " << arucoId << ", landing!"
                   << std::endl;
-
-        tello.SendCommand("down 100");
-        sleep(4);
-        tello.SendCommand("ccw 180");
-        sleep(4);
+        
         tello.SendCommandWithResponse("land");
-
+        sleep(4);
         //for red led
         exit(2);
     }
@@ -214,10 +207,6 @@ void change_to_tello_wifi() {
 auto main(int argc, char **argv) -> int
 {
 
-    using ros_alate::InterfaceType;
-    using ros_alate::Node;
-    using ros_alate::QosSettings;
-    using ros_alate::ReliabilityQosEnum;
     
     std::ifstream config("../config.json");
 
@@ -274,6 +263,10 @@ auto main(int argc, char **argv) -> int
     // tello conf path
     wpa_supplicant_tello_file_path  = conf[DEVICE]["tello_conf_path"];
 
+    using ros_alate::InterfaceType;
+    using ros_alate::Node;
+    using ros_alate::QosSettings;
+    using ros_alate::ReliabilityQosEnum;
 
     auto const NODE_NAME = std::string("ros_alate_middeware_demo");
     auto const INTERFACES = std::vector<std::string>{"swarm_interfaces", "alate_interfaces"};
@@ -289,7 +282,8 @@ auto main(int argc, char **argv) -> int
     user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback_2);
     user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
     user_api.advertise("obstacles_drones_t", msg.str());
-    
+    user_api.spinOnce();
+
     if (false)
     {
         aruco detector(yamlCalibrationPath, cameraPort, currentMarkerSize, user_api);
