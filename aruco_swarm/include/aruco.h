@@ -13,21 +13,25 @@
 #include <thread>
 #include <vector>
 
+#include "../include/swarm_middleware_api/node.hpp"
+
 class aruco
 {
 public:
       aruco(std::string &yamlCalibrationPath, int cameraPort,
-      float currentMarkerSize);
+      float currentMarkerSize, ros_alate::Node &user_api);
 
       ~aruco();
 
       aruco(std::string &yamlCalibrationPath, std::string &cameraString,
-      float currentMarkerSize);
+      float currentMarkerSize, ros_alate::Node &user_api);
 
-      void getMarkerIds();
+      void getMarkerIds(ros_alate::Node &user_api);
 
       double forwardDistance(std::vector<cv::Vec3d> localRvecs,
            std::vector<cv::Vec3d> localTvecs, int Id);
+
+      void set_dr_id(int id1, int id2, int id3);
 
       std::pair<int, int> twoClosest(std::vector<cv::Vec3d> localRvecs,
        std::vector<cv::Vec3d> localTvecs);
@@ -47,6 +51,7 @@ public:
       int yaw = 0;
       int rollAngle = 0;
 
+
 private:
       bool runCamera;
       bool stop;
@@ -57,6 +62,7 @@ private:
       std::thread arucoThread;
       std::shared_ptr<bool> holdCamera;
       std::shared_ptr<cv::VideoCapture> capture;
+      int dr_id_1, dr_id_2, dr_id_3;
 
       boost::lockfree::spsc_queue<std::vector<uchar>> frame_queue;
 

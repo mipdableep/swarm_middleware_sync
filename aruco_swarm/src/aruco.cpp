@@ -6,7 +6,17 @@
 #include <opencv2/highgui.hpp>
 #include <vector>
 
+void print_msg_callback(const std::string &msg)
+{
+    std::cout << "Received message:\n"
+              << msg << std::endl;
+}
 
+void aruco::set_dr_id(int id1, int id2, int id3)
+{
+    dr_id_1 = id1; dr_id_2 = id2; dr_id_3 = id3;
+    std::cout << "\ndr_ids:\n" << id1 << "  " << id2 << "  " << id3 << std::endl;
+}
 
 std::vector<cv::Mat> aruco::getCameraCalibration(const std::string &path) {
     cv::FileStorage fs(path, cv::FileStorage::READ);
@@ -55,7 +65,8 @@ std::vector<cv::Mat> aruco::getCameraCalibration(const std::string &path) {
     return newCameraParams;
 }
 
-void aruco::getMarkerIds(){
+void aruco::getMarkerIds(ros_alate::Node &user_api){
+
     stop = false;
     std::cout << "started track thread" << std::endl;
     std::vector<std::vector<cv::Point2f>> corners;
@@ -105,9 +116,30 @@ void aruco::getMarkerIds(){
                 arucoDetected = false;
                 if (counter&10 == 0)
                 std::cout << "didnt detect marker" << std::endl;
-            } else
-                arucoDetected = true;
+            } else {
+                for (int id : ids){
+                    if (id == dr_id_1 || id == dr_id_2 || id == dr_id_3)
+                    {
+                        arucoDetected = true;
+                        std::cout<<"before"<<std::endl;
+                        using ros_alate::InterfaceType;
+                        using ros_alate::Node;
+                        using ros_alate::QosSettings;
+                        using ros_alate::ReliabilityQosEnum;
 
+                        auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, 10};
+                        std::stringstream msg;
+                        msg << "fail_id: " + std::to_string(id);
+                        
+                        auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
+                        user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback);
+                        user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
+                        user_api.advertise("obstacles_drones_t", msg.str());
+
+                        std::cout<<"after"<<std::endl;
+                    }
+                }
+            }
         }  // end of canConteniue
         counter ++;
         usleep(100000);
@@ -137,9 +169,11 @@ void aruco::getCameraFeed() {
 }
 
 aruco::aruco(std::string &yamlCalibrationPath, int cameraPort,
-             float currentMarkerSize)
+             float currentMarkerSize, ros_alate::Node &user_api)
     : frame_queue(1) {
     this->yamlCalibrationPath = yamlCalibrationPath;
+
+    
     stop = false;
     holdCamera = std::make_shared<bool>(false);
     frame = std::make_shared<cv::Mat>();
@@ -152,14 +186,16 @@ aruco::aruco(std::string &yamlCalibrationPath, int cameraPort,
         std::cout << "couldnt open camera by port" << std::endl;
     }
     this->currentMarkerSize = currentMarkerSize;
-    cameraThread = std::move(std::thread(&aruco::getCameraFeed, this));
-    arucoThread = std::move(std::thread(&aruco::getMarkerIds, this));
+    cameraThread = std::thread([&] {aruco::getCameraFeed();});
+    arucoThread  = std::thread([&] {aruco::getMarkerIds(user_api);});
 }
 
 aruco::aruco(std::string &yamlCalibrationPath, std::string &cameraString,
-             float currentMarkerSize)
+             float currentMarkerSize, ros_alate::Node &user_api)
     : frame_queue(1) {
     this->yamlCalibrationPath = yamlCalibrationPath;
+
+
     stop = false;
     holdCamera = std::make_shared<bool>(false);
     frame = std::make_shared<cv::Mat>();
@@ -168,8 +204,8 @@ aruco::aruco(std::string &yamlCalibrationPath, std::string &cameraString,
     capture->set(3, 960);
     capture->set(4, 720);
     this->currentMarkerSize = currentMarkerSize;
-    cameraThread = std::move(std::thread(&aruco::getCameraFeed, this));
-    arucoThread = std::move(std::thread(&aruco::getMarkerIds, this));
+    cameraThread = std::thread([&] {aruco::getCameraFeed();});
+    arucoThread  = std::thread([&] {aruco::getMarkerIds(user_api);});
 }
 
 aruco::~aruco() {

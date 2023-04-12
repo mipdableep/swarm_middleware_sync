@@ -9,14 +9,14 @@
         "save_video" : false,
         "save_video_path":"/home/fares/rbd/projects/aruco_swarm/arucoSwarm/video_cap/",
         
-        "do_nmcli_command"  : true,
+        "do_nmcli_command" : false,
         "send_takeoff"     : false,
         
         "runServer"        : false,
         "serverHostIp"     :"10.3.141.188",
         "serverPort"       : 9090,
         
-        "rpi_connect_to_drone" : true,
+        "rpi_connect_to_drone" : false,
 
         "dist_forward"   : 30,
         "turn_amount"    : 5,
@@ -32,6 +32,7 @@
     {
         "aruco_forward_id" : -1,
         "aruco_back_id"    : 145,
+        "aruco_self_id"    : -1,
 
         
         "DroneName": "drone-1",
@@ -44,6 +45,7 @@
     {
         "aruco_forward_id" : -1,
         "aruco_back_id"    : -1,
+        "aruco_self_id"    : -1,
 
         
         "DroneName": "drone-2",
@@ -56,11 +58,12 @@
     {
         "aruco_forward_id" : -1,
         "aruco_back_id"    : 145,
+        "aruco_self_id"    : -1,
 
         
         "DroneName": "drone-3",
         "tello_conf_path":"/home/pi/arucoSwarm/tello_supllicants/drone3.conf",
 
-        "calibration_path": "..camera.yaml"
+        "calibration_path": "../calib/tello_camera.yaml"
     }
 }

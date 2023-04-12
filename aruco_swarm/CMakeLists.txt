@@ -10,6 +10,8 @@ find_package(Boost REQUIRED)
 # find_package(CTello REQUIRED)
 
 include_directories(include)
+include_directories(../include)
+link_directories(../lib)
 
 add_library(aruco src/aruco.cpp)
 add_library(drone_client src/drone_client.cc)
@@ -24,6 +26,7 @@ target_link_libraries(
   ctello
   drone_client
   -lpthread
-  nlohmann_json::nlohmann_json)
+  nlohmann_json::nlohmann_json
+  swarm_middleware_api)
 
 set(CMAKE_BUILD_TYPE Debug)

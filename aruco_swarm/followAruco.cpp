@@ -2,7 +2,11 @@
 
 using namespace std::chrono_literals;
 
-
+void print_msg_callback_2(const std::string &msg)
+{
+    std::cout << "Received message:\n"
+              << msg << std::endl;
+}
 
 void webcamTest(aruco& detector) {
     std::cout<< "in: webcamTest()" << std::endl;
@@ -171,7 +175,7 @@ void ScanForAruco(aruco& detector, int arucoId, bool& runDetection, bool& canCon
     while (runDetection) {
         for (int i : detector.ids) {
             if (i == arucoId) counter++;
-            std::cout<<"++ ";
+            std::cout<<"++ "<<std::endl;
         }
         usleep(100000);
     }
@@ -192,13 +196,16 @@ void change_to_tello_wifi() {
     std::string connection_cmd =
         "sudo wpa_supplicant -i wlan0 -B -c " + wpa_supplicant_tello_file_path;
 
-    std::ofstream fifo(PIPE_path.c_str());
-    if (!fifo){
-        std::cerr << "Failed to open named pipe" << std::endl; exit(EXIT_FAILURE);
-    }
+    std::ofstream fifo;
 
+    fifo.open(PIPE_path.c_str());
+    if (!fifo){std::cerr << "Failed to open named pipe" << std::endl; exit(EXIT_FAILURE);}
     fifo << kill_connection_cmd << std::endl;
+    fifo.close();
     std::this_thread::sleep_for(2s);
+
+    fifo.open(PIPE_path.c_str());
+    if (!fifo){std::cerr << "Failed to open named pipe" << std::endl; exit(EXIT_FAILURE);}
     fifo << connection_cmd << std::endl;
     fifo.close();
     std::this_thread::sleep_for(10s);
@@ -206,7 +213,7 @@ void change_to_tello_wifi() {
 
 int main(int argc, char *argv[])
 {
-std::ifstream config("../config.json");
+    std::ifstream config("../config.json");
 
     nlohmann::json conf;
     config >> conf;
@@ -234,6 +241,7 @@ std::ifstream config("../config.json");
 
     int aruco_forward_id = conf[DEVICE]["aruco_forward_id"];
     int aruco_back_id    = conf[DEVICE]["aruco_back_id"];
+    int aruco_self_id    = conf[DEVICE]["aruco_self_id"];
 
     // capture settings
     bool isWebcam  = DEVICE == "webcam";
@@ -259,7 +267,48 @@ std::ifstream config("../config.json");
     
     // tello conf path
     wpa_supplicant_tello_file_path  = conf[DEVICE]["tello_conf_path"];
+
+
+    using ros_alate::InterfaceType;
+    using ros_alate::Node;
+    using ros_alate::QosSettings;
+    using ros_alate::ReliabilityQosEnum;
+    // For example /home/pavelvm/dev/ros_alate/swarm_middleware_api/examples/
+    if (argc < 2)
+    {
+        std::cout << "Usage: " << argv[0] << " <path_to_example_dir>" << std::endl;
+        exit(1);
+    }
+
+    std::cout << "swarm interfaces topic demo:\n";
+    // create user_api object
+    // node_name is used to create middleware node
+    // interfaces is used to load shared libraries
+    auto const NODE_NAME = std::string("ros_alate_middeware_demo");
+    auto const INTERFACES = std::vector<std::string>{"swarm_interfaces", "alate_interfaces"};
+    auto user_api = Node(argc, argv, NODE_NAME, INTERFACES);
+
+    // !start of tests!
+    // !----------------------------------------------------------------------------
     
+    auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, 10};
+    std::stringstream msg;
+    msg << "fail_id: " + std::to_string(58);
+    auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
+    user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback_2);
+    user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
+    user_api.advertise("obstacles_drones_t", msg.str());
+    
+    if (false)
+    {
+        aruco detector(yamlCalibrationPath, cameraPort, currentMarkerSize, user_api);
+        detector.imshowStream = do_imshow;
+
+        std::thread movementThread
+        ([&]{
+            webcamTest(detector);
+        });
+    }
 
     // !start of drone part!
     // !----------------------------------------------------------------------------
@@ -289,9 +338,9 @@ std::ifstream config("../config.json");
         tello.SendCommand("up 70");
     }
 
-    aruco detector(yamlCalibrationPath, cameraString, currentMarkerSize);
+    aruco detector(yamlCalibrationPath, cameraString, currentMarkerSize, user_api);
     detector.imshowStream = do_imshow;
-    
+    detector.set_dr_id(aruco_forward_id, aruco_back_id, aruco_self_id);
     // Detector object_detector(argv[1], detector.get_frame_queue());
     std::thread movementThread
     ([&]{
@@ -299,4 +348,5 @@ std::ifstream config("../config.json");
         });
 
     movementThread.join();
+    
 }
