@@ -188,6 +188,8 @@ void change_to_tello_wifi() {
     std::string kill_connection_cmd = "sudo killall wpa_supplicant";
     std::string connection_cmd =
         "sudo wpa_supplicant -i wlan0 -B -c " + wpa_supplicant_tello_file_path;
+    std::cout<<kill_connection_cmd<<std::endl;
+    std::cout<<connection_cmd<<std::endl;
 
     std::ofstream fifo;
 
@@ -274,16 +276,6 @@ auto main(int argc, char **argv) -> int
 
     // !start of tests!
     // !----------------------------------------------------------------------------
-    
-    auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, 10};
-    std::stringstream msg;
-    msg << "fail_id: " + std::to_string(58);
-    auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
-    user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback_2);
-    user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
-    user_api.advertise("obstacles_drones_t", msg.str());
-    user_api.spinOnce();
-
     if (false)
     {
         aruco detector(yamlCalibrationPath, cameraPort, currentMarkerSize, user_api);
@@ -298,9 +290,11 @@ auto main(int argc, char **argv) -> int
     // !start of drone part!
     // !----------------------------------------------------------------------------
     if (runServer){
+        std::cout<< "connecting to server" <<std::endl;
         DroneClient client(droneName, serverHostIp, serverPort);
         client.connect_to_server();
         client.wait_for_takeoff();
+        std::cout<< "recived takeoff" <<std::endl;
         change_to_tello_wifi();
     }
 

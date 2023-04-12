@@ -12,11 +12,11 @@
         "do_nmcli_command" : false,
         "send_takeoff"     : true,
         
-        "runServer"        : false,
-        "serverHostIp"     :"10.3.141.188",
+        "runServer"        : true,
+        "serverHostIp"     :"192.168.87.24",
         "serverPort"       : 9090,
         
-        "rpi_connect_to_drone" : true,
+        "rpi_connect_to_drone" : false,
 
         "dist_forward"   : 30,
         "turn_amount"    : 5,
