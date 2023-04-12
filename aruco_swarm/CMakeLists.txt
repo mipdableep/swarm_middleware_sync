@@ -16,7 +16,12 @@ link_directories(../lib)
 add_library(aruco src/aruco.cpp)
 add_library(drone_client src/drone_client.cc)
 
-target_link_libraries(aruco -lpthread ${OpenCV_LIBS} ${Boost_LIBRARIES})
+target_link_libraries(
+  aruco 
+  -lpthread 
+  ${OpenCV_LIBS} 
+  ${Boost_LIBRARIES} 
+  swarm_middleware_api)
 
 add_executable(followAruco followAruco.cpp)
 
@@ -28,5 +33,3 @@ target_link_libraries(
   -lpthread
   nlohmann_json::nlohmann_json
   swarm_middleware_api)
-
-set(CMAKE_BUILD_TYPE Debug)

@@ -3,7 +3,7 @@
 
 #include "aruco.h"
 #include "drone_client.hpp"
-
+#include "../../include/swarm_middleware_api/node.hpp"
 #include <cmath>
 #include <deque>
 #include <nlohmann/json.hpp>

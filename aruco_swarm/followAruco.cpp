@@ -211,8 +211,14 @@ void change_to_tello_wifi() {
     std::this_thread::sleep_for(10s);
 }
 
-int main(int argc, char *argv[])
+auto main(int argc, char **argv) -> int
 {
+
+    using ros_alate::InterfaceType;
+    using ros_alate::Node;
+    using ros_alate::QosSettings;
+    using ros_alate::ReliabilityQosEnum;
+    
     std::ifstream config("../config.json");
 
     nlohmann::json conf;
@@ -269,21 +275,6 @@ int main(int argc, char *argv[])
     wpa_supplicant_tello_file_path  = conf[DEVICE]["tello_conf_path"];
 
 
-    using ros_alate::InterfaceType;
-    using ros_alate::Node;
-    using ros_alate::QosSettings;
-    using ros_alate::ReliabilityQosEnum;
-    // For example /home/pavelvm/dev/ros_alate/swarm_middleware_api/examples/
-    if (argc < 2)
-    {
-        std::cout << "Usage: " << argv[0] << " <path_to_example_dir>" << std::endl;
-        exit(1);
-    }
-
-    std::cout << "swarm interfaces topic demo:\n";
-    // create user_api object
-    // node_name is used to create middleware node
-    // interfaces is used to load shared libraries
     auto const NODE_NAME = std::string("ros_alate_middeware_demo");
     auto const INTERFACES = std::vector<std::string>{"swarm_interfaces", "alate_interfaces"};
     auto user_api = Node(argc, argv, NODE_NAME, INTERFACES);

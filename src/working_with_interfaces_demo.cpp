@@ -5,14 +5,14 @@
 #include "../include/swarm_middleware_api/node.hpp"
 #include <yaml-cpp/yaml.h>
 
-auto read_yaml_file(const std::string &file_path)
-{
-    // read file to string buffer
-    std::ifstream file(file_path);
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    return buffer.str();
-}
+// auto read_yaml_file(const std::string &file_path)
+// {
+//     // read file to string buffer
+//     std::ifstream file(file_path);
+//     std::stringstream buffer;
+//     buffer << file.rdbuf();
+//     return buffer.str();
+// }
 
 void print_msg_callback(const std::string &msg)
 {
@@ -27,24 +27,23 @@ auto main(int argc, char **argv) -> int
     using ros_alate::QosSettings;
     using ros_alate::ReliabilityQosEnum;
     // For example /home/pavelvm/dev/ros_alate/swarm_middleware_api/examples/
-    if (argc < 2)
-    {
-        std::cout << "Usage: " << argv[0] << " <path_to_example_dir>" << std::endl;
-        return 1;
-    }
-
-    std::cout << "swarm interfaces topic demo:\n";
-    // create user_api object
-    // node_name is used to create middleware node
-    // interfaces is used to load shared libraries
     auto const NODE_NAME = std::string("ros_alate_middeware_demo");
     auto const INTERFACES = std::vector<std::string>{"swarm_interfaces", "alate_interfaces"};
     auto user_api = Node(argc, argv, NODE_NAME, INTERFACES);
 
-    int const MAX_HISTORY = 10;
-    auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, MAX_HISTORY};
+    // !start of tests!
+    // !----------------------------------------------------------------------------
+    
+    auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, 10};
+    std::stringstream msg;
+    msg << "fail_id: " + std::to_string(58);
+    auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
 
-    auto const EXAMPLE_DIR_PATH = std::string(argv[1]);
+    while (true)
+        user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback);
+
+
+    // auto const EXAMPLE_DIR_PATH = std::string(argv[1]);
 
     // { // Mission control enum topic
     //     auto mc_sample = read_yaml_file(EXAMPLE_DIR_PATH + std::string("mission_control.yaml"));
@@ -94,21 +93,21 @@ auto main(int argc, char **argv) -> int
     //     user_api.advertise("operational_report_t", operational_report_sample);
     // }
 
-    if (false){ // ObstaclesAndDrones topic
-        auto obstacles_drones_sample = read_yaml_file(EXAMPLE_DIR_PATH + std::string("obstacles_and_drone.yaml"));
-        auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
-        user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback);
-        user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
-        user_api.advertise("obstacles_drones_t", obstacles_drones_sample);
-    }
-    std::cout<<"\n\n"<<std::endl;
+    // { // ObstaclesAndDrones topic
+    //     auto obstacles_drones_sample = read_yaml_file(EXAMPLE_DIR_PATH + std::string("obstacles_and_drone.yaml"));
+    //     auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
+    //     user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback);
+    //     user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
+    //     user_api.advertise("obstacles_drones_t", obstacles_drones_sample);
+    // }
+    // std::cout<<"\n\n"<<std::endl;
     
-    std::stringstream msg;
-    msg << "fail_id: " + std::to_string(58);
-    auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
-    user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback);
-    user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
-    user_api.advertise("obstacles_drones_t", msg.str());
+    // std::stringstream msg;
+    // msg << "fail_id: " + std::to_string(58);
+    // auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
+    // user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback);
+    // user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
+    // user_api.advertise("obstacles_drones_t", msg.str());
 
     // { // InitObstaclesAndDrones topic
 
