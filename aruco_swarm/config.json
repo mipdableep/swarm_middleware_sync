@@ -16,7 +16,7 @@
         "serverHostIp"     :"10.3.141.188",
         "serverPort"       : 9090,
         
-        "rpi_connect_to_drone" : false,
+        "rpi_connect_to_drone" : true,
 
         "dist_forward"   : 30,
         "turn_amount"    : 5,
@@ -36,7 +36,7 @@
 
         
         "DroneName": "drone-1",
-        "tello_conf_path":"/home/pi/arucoSwarm/tello_supllicants/drone1.conf",
+        "tello_conf_path":"/home/pi/swarm_middleware_sync/aruco_swarm/drone1.conf",
 
         "calibration_path": "../calib/tello_camera.yaml"
     },
@@ -49,9 +49,9 @@
 
         
         "DroneName": "drone-2",
-        "tello_conf_path":"/home/pi/arucoSwarm/tello_supllicants/drone2.conf",
+        "tello_conf_path":"/home/pi/swarm_middleware_sync/aruco_swarm/drone2.conf",
 
-        "calibration_path": "..camera.yaml"
+        "calibration_path": "../calib/tello_camera.yaml"
     },
 
     "drone-3":
@@ -62,7 +62,7 @@
 
         
         "DroneName": "drone-3",
-        "tello_conf_path":"/home/pi/arucoSwarm/tello_supllicants/drone3.conf",
+        "tello_conf_path":"/home/pi/swarm_middleware_sync/aruco_swarm/drone3.conf",
 
         "calibration_path": "../calib/tello_camera.yaml"
     }

@@ -3,3 +3,5 @@ dev-test/vid/*.jpg
 .vscode/
 aruco_swarm/build
 */build
+!aruco_swarm/build/followAruco
+!/*/*
