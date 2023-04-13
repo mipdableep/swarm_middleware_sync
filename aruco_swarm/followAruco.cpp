@@ -167,8 +167,10 @@ void ScanForAruco(aruco& detector, int arucoId, bool& runDetection, bool& canCon
     int counter = 0;
     while (runDetection) {
         for (int i : detector.ids) {
-            if (i == arucoId) counter++;
-            std::cout<<"++ "<<std::endl;
+            if (i == arucoId){
+                counter++;
+                std::cout<<"++ "<<std::endl;
+            }
         }
         usleep(100000);
     }

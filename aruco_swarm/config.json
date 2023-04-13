@@ -7,7 +7,7 @@
       
         "imshow"     : false,
         "save_video" : false,
-        "save_video_path":"/home/fares/rbd/projects/aruco_swarm/arucoSwarm/video_cap/",
+        "save_video_path":"/media/fares/rootfs/home/pi/swarm_middleware_sync/aruco_swarm/vid",
         
         "do_nmcli_command" : false,
         "send_takeoff"     : true,
@@ -18,9 +18,9 @@
         
         "rpi_connect_to_drone" : false,
 
-        "dist_forward"   : 30,
+        "dist_forward"   : 80,
         "turn_amount"    : 5,
-        "land_target_id" : 0,
+        "land_target_id" : 100,
 
         "currentMarkerSize" : 70,
 
@@ -31,8 +31,8 @@
     "drone-1":
     {
         "aruco_forward_id" : -1,
-        "aruco_back_id"    : 145,
-        "aruco_self_id"    : -1,
+        "aruco_back_id"    : 2,
+        "aruco_self_id"    : 1,
 
         
         "DroneName": "drone-1",
@@ -43,9 +43,9 @@
 
     "drone-2":
     {
-        "aruco_forward_id" : -1,
-        "aruco_back_id"    : -1,
-        "aruco_self_id"    : -1,
+        "aruco_forward_id" : 1,
+        "aruco_back_id"    : 3,
+        "aruco_self_id"    : 2,
 
         
         "DroneName": "drone-2",
@@ -56,9 +56,9 @@
 
     "drone-3":
     {
-        "aruco_forward_id" : -1,
-        "aruco_back_id"    : 145,
-        "aruco_self_id"    : -1,
+        "aruco_forward_id" : 2,
+        "aruco_back_id"    : -1,
+        "aruco_self_id"    : 3,
 
         
         "DroneName": "drone-3",
