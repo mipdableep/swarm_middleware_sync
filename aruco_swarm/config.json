@@ -13,7 +13,7 @@
         "send_takeoff"     : true,
         
         "runServer"        : true,
-        "serverHostIp"     :"192.168.87.24",
+        "serverHostIp"     :"10.3.141.188",
         "serverPort"       : 9090,
         
         "rpi_connect_to_drone" : false,
@@ -24,7 +24,7 @@
 
         "currentMarkerSize" : 70,
 
-        "PIPE_path" : "../../PIPE",
+        "PIPE_path" : "/swarm_middleware/PIPE",
         "DEVICE":"drone-3"
     },
 
@@ -36,7 +36,7 @@
 
         
         "DroneName": "drone-1",
-        "tello_conf_path":"/home/pi/swarm_middleware_sync/aruco_swarm/drone1.conf",
+        "tello_conf_path":"/home/pi/swarm_middleware_sync/aruco_swarm/tello_supllicants/drone1.conf",
 
         "calibration_path": "../calib/tello_camera.yaml"
     },
@@ -49,7 +49,7 @@
 
         
         "DroneName": "drone-2",
-        "tello_conf_path":"/home/pi/swarm_middleware_sync/aruco_swarm/drone2.conf",
+        "tello_conf_path":"/home/pi/swarm_middleware_sync/aruco_swarm/tello_supllicants/drone2.conf",
 
         "calibration_path": "../calib/tello_camera.yaml"
     },
@@ -62,7 +62,7 @@
 
         
         "DroneName": "drone-3",
-        "tello_conf_path":"/home/pi/swarm_middleware_sync/aruco_swarm/drone3.conf",
+        "tello_conf_path":"/home/pi/swarm_middleware_sync/aruco_swarm/tello_supllicants/drone3.conf",
 
         "calibration_path": "../calib/tello_camera.yaml"
     }
