@@ -5,6 +5,7 @@
 #include <sstream>
 #include <Eigen/Core>
 #include <Eigen/Dense>
+#include <thread>
 
 
 int rc_x,rc_y,rc_z,rc_Rz;
@@ -66,7 +67,7 @@ void update_location(const std::string &msg)
     vel_recived = true;
 }
 
-void run(ros_alate::Node &user_api)
+void run(ros_alate::Node &user_api, bool &run_loop)
 {
     using ros_alate::InterfaceType;
     using ros_alate::Node;
@@ -74,16 +75,27 @@ void run(ros_alate::Node &user_api)
     using ros_alate::ReliabilityQosEnum;
 
     auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, 10};
-    auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
 
-    while (true)
+    auto interface_type_vel = InterfaceType("alate_interfaces", "Velocity");
+    auto interface_type_drone_alt = InterfaceType("swarm_interfaces", "DroneOrientationAndAttitude");
+
+    bool br = false;
+
+    while (run_loop)
     {
-        user_api.listen("velocity_t", interface_type, qos, update_location);
+        user_api.listen("velocity_t", interface_type_vel, qos, update_location);
         while (!vel_recived)
         {
             user_api.spinOnce();
             usleep(10000);
+            if (!run_loop){
+                br = true;
+                break;
+            }
         }
+
+        if (br)
+            break;
 
         std::stringstream msg;
         msg << "abort: false\ncamera_angles: " << Rz
@@ -92,8 +104,11 @@ void run(ros_alate::Node &user_api)
         << "\tlatitude: "  << x
         << "\tlongitude: " << y;
 
-        user_api.listen("drone_orientation_attitude_t", interface_type, qos, print_msg_callback);
-        user_api.set_advertiser("drone_orientation_attitude_t", interface_type, qos);
+        user_api.listen("drone_orientation_attitude_t", interface_type_drone_alt, qos, print_msg_callback);
+        user_api.set_advertiser("drone_orientation_attitude_t", interface_type_drone_alt, qos);
         user_api.advertise("drone_orientation_attitude_t", msg.str());
+
+        vel_recived = false;
     }
 }
+

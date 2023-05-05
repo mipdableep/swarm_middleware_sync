@@ -8,9 +8,8 @@
 const std::vector<int> leagal_ids = {10, 11, 12};
 std::vector<std::vector<cv::Point2f>> corners;
 std::vector<int> ids;
-const cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(
-    cv::aruco::DICT_ARUCO_ORIGINAL /*DICT_4X4_100*/
-);
+const cv::Ptr<cv::aruco::Dictionary> dictionary = 
+    cv::aruco::getPredefinedDictionary(cv::aruco::DICT_ARUCO_ORIGINAL);
 
 void print_msg_callback(const std::string &msg)
 {
