@@ -22,10 +22,11 @@ void print_msg_callback(const std::string &msg)
 
 void update_location(const std::string &msg)
 {
-    std::stringstream ss(msg);
+    int rc_x,rc_y,rc_z,rc_Rz;
 
+    std::stringstream ss(msg);
     std::string line;
-    int counter = 0;
+
     while (getline(ss, line))
     {
         std::string key = line.substr(0, line.find(":"));
@@ -43,6 +44,8 @@ void update_location(const std::string &msg)
             {rc_Rz = value / messages_hrz;}
     }
     
+    std::cout << rc_x << "\t" << rc_y << "\t" << rc_z << "\t" << rc_Rz << std::endl;
+
     z += rc_z;
     Rz += rc_Rz;
 
@@ -53,16 +56,16 @@ void update_location(const std::string &msg)
          std::sin(rad_Rz),  std::cos(rad_Rz);
     
     Eigen::Vector2f t;
-    t << x, y;
+    t << rc_x, rc_y;
 
     Eigen::Vector2f rt = R * t;
     x += rt[0];
     y += rt[1];
     
-    std::cout << "x:"  << x  << std::endl;
-    std::cout << "y:"  << y  << std::endl;
-    std::cout << "z:"  << z  << std::endl;
-    std::cout << "Rz:" << Rz << std::endl;
+    std::cout << "x:"  << x  << "\t";
+    std::cout << "y:"  << y  << "\t";
+    std::cout << "z:"  << z  << "\t";
+    std::cout << "Rz:" << Rz << "\n" << std::endl;
 
     vel_recived = true;
 }
