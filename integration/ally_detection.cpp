@@ -44,9 +44,9 @@ void detect_allys(cv::Mat img, ros_alate::Node &user_api)
         msg << "fail_id: " + std::to_string(i);
         
         auto interface_type = InterfaceType("swarm_interfaces", "ObstaclesAndDrones");
-        user_api.listen("obstacles_drones_t", interface_type, qos, print_msg_callback);
-        user_api.set_advertiser("obstacles_drones_t", interface_type, qos);
-        user_api.advertise("obstacles_drones_t", msg.str());
+        user_api.listen("peer_detection", interface_type, qos, print_msg_callback);
+        user_api.set_advertiser("peer_detection", interface_type, qos);
+        user_api.advertise("peer_detection", msg.str());
         user_api.spinOnce();
     }
     

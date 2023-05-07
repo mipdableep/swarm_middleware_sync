@@ -107,9 +107,9 @@ void run(ros_alate::Node &user_api, bool &run_loop)
         << "\tlatitude: "  << y
         << "\tlongitude: " << x;
 
-        user_api.listen("drone_orientation_attitude_t", interface_type_drone_alt, qos, print_msg_callback);
-        user_api.set_advertiser("drone_orientation_attitude_t", interface_type_drone_alt, qos);
-        user_api.advertise("drone_orientation_attitude_t", msg.str());
+        user_api.listen("location", interface_type_drone_alt, qos, print_msg_callback);
+        user_api.set_advertiser("location", interface_type_drone_alt, qos);
+        user_api.advertise("location", msg.str());
 
         vel_recived = false;
     }
