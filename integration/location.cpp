@@ -104,8 +104,8 @@ void run(ros_alate::Node &user_api, bool &run_loop)
         msg << "abort: false\ncamera_angles: " << Rz
         << "\ncamera_elevation: 0\nlocation:\n"
         << "\taltitude: "  << z
-        << "\tlatitude: "  << x
-        << "\tlongitude: " << y;
+        << "\tlatitude: "  << y
+        << "\tlongitude: " << x;
 
         user_api.listen("drone_orientation_attitude_t", interface_type_drone_alt, qos, print_msg_callback);
         user_api.set_advertiser("drone_orientation_attitude_t", interface_type_drone_alt, qos);
