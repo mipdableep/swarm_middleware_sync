@@ -1,14 +1,7 @@
 #include "location.cpp"
 #include "ally_detection.cpp"
 
-
-void print_msg_callback(const std::string &msg)
-{
-    std::cout << "Received message:\n"
-              << msg << std::endl;
-}
-
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     using ros_alate::InterfaceType;
     using ros_alate::Node;

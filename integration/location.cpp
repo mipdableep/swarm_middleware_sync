@@ -14,7 +14,7 @@ int x = 0,y = 0,z = 0,Rz = 0;
 int messages_hrz = 10;
 bool vel_recived = false;
 
-void print_msg_callback(const std::string &msg)
+void print_msg_callback2(const std::string &msg)
 {
     std::cout << "Received message:\n"
               << msg << std::endl;
@@ -107,11 +107,19 @@ void run(ros_alate::Node &user_api, bool &run_loop)
         << "\tlatitude: "  << y
         << "\tlongitude: " << x;
 
-        user_api.listen("location", interface_type_drone_alt, qos, print_msg_callback);
+        user_api.listen("location", interface_type_drone_alt, qos, print_msg_callback2);
         user_api.set_advertiser("location", interface_type_drone_alt, qos);
         user_api.advertise("location", msg.str());
 
         vel_recived = false;
     }
+}
+
+std::string make_msg(int x, int y, int z, int Rz)
+{
+    return ("linear_x: " + std::to_string(x) + 
+          "\nlinear_y: " + std::to_string(y) +
+          "\nlinear_z: " + std::to_string(z) +
+          "\npitch: 0.0\nroll: 0.0\nyaw: " + std::to_string(Rz));
 }
 
