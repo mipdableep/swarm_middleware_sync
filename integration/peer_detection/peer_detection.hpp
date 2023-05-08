@@ -13,3 +13,9 @@ std::string camera_string;
 
 std::shared_ptr<cv::Mat> frame;
 std::shared_ptr<cv::VideoCapture> capture;
+
+const std::vector<int> leagal_ids = {635, 11, 12};
+std::vector<std::vector<cv::Point2f>> corners;
+std::vector<int> ids;
+const cv::Ptr<cv::aruco::Dictionary> dictionary = 
+    cv::aruco::getPredefinedDictionary(cv::aruco::DICT_ARUCO_ORIGINAL);

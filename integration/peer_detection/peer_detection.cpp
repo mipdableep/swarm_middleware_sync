@@ -1,11 +1,5 @@
 #include "peer_detection.hpp"
 
-const std::vector<int> leagal_ids = {10, 11, 12};
-std::vector<std::vector<cv::Point2f>> corners;
-std::vector<int> ids;
-const cv::Ptr<cv::aruco::Dictionary> dictionary = 
-    cv::aruco::getPredefinedDictionary(cv::aruco::DICT_ARUCO_ORIGINAL);
-
 void print_msg_callback(const std::string &msg)
 {
     std::cout << "Received message:\n"
@@ -16,8 +10,12 @@ void print_msg_callback(const std::string &msg)
 void detect_allys(ros_alate::Node &user_api)
 {
     while (true){
+        usleep(5000);
         if (frame->empty())
-            std::cout<<"frame not recived properly"<<std::endl;
+        {
+            continue;
+        }
+
 
         cv::aruco::detectMarkers(*frame, dictionary, corners, ids);
 
@@ -36,6 +34,8 @@ void detect_allys(ros_alate::Node &user_api)
             using ros_alate::Node;
             using ros_alate::QosSettings;
             using ros_alate::ReliabilityQosEnum;
+
+            std::cout << "detected: ID " << i << std::endl;
 
             auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, 10};
             std::stringstream msg;
@@ -62,11 +62,13 @@ void detect_allys(ros_alate::Node &user_api)
             user_api.advertise("peer_detection", "fail_id: 0");
             user_api.spinOnce();
         }
+        std::cout << std::endl;
     }
 }
 
 void get_camera_feed()
 {
+
     frame = std::make_shared<cv::Mat>();
     capture = std::make_shared<cv::VideoCapture>();
     capture->open(camera_string);
@@ -74,6 +76,7 @@ void get_camera_feed()
     capture->set(4, 720);
 
     run_camera = true;
+
     while (run_camera) {
         if (!capture || !(capture->isOpened())) {
             usleep(5000);
@@ -101,12 +104,15 @@ int main(int argc, char **argv)
     using ros_alate::Node;
     using ros_alate::QosSettings;
     using ros_alate::ReliabilityQosEnum;
-
+ 
     auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, 10};
 
+    auto const NODE_NAME = std::string("ros_alate_middeware_demo");
     auto const INTERFACES = std::vector<std::string>{"swarm_interfaces", "alate_interfaces"};
-    auto peer_det_node = Node(argc, argv, "peer_detection_node", INTERFACES);
+    auto user_api = Node(argc, argv, NODE_NAME, INTERFACES);
 
-    std::thread camera_thread([&] {get_camera_feed();});
-    std::thread peer_det_thread ([&] {detect_allys(peer_det_node);});
+    std::thread peer_det_thread ([&] {detect_allys(user_api);});
+    get_camera_feed();
+
+    // std::thread camera_thread([&] {get_camera_feed();});
 }
