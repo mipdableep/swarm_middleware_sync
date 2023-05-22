@@ -23,7 +23,6 @@ target_link_libraries(
     -lpthread 
     swarm_middleware_api
     Eigen3::Eigen
-    ${OpenCV_LIBS}
     ${Boost_LIBRARIES}
 )
 

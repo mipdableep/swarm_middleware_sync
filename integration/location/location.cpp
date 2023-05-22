@@ -13,6 +13,16 @@ int x = 0,y = 0,z = 0,Rz = 0;
 int messages_hrz = 10;
 bool vel_recived = false;
 
+//for ros-alate
+auto const NODE_NAME = std::string("ros_alate_middeware_demo");
+auto const INTERFACES = std::vector<std::string>{"swarm_interfaces", "alate_interfaces"};
+
+ros_alate::QosSettings qos = ros_alate::QosSettings{ros_alate::ReliabilityQosEnum::BEST_EFFORT, 10};
+
+ros_alate::InterfaceType interface_type_drone_alt = ros_alate::InterfaceType("swarm_interfaces", "DroneOrientationAndAttitude");
+ros_alate::InterfaceType interface_type_vel = ros_alate::InterfaceType("alate_interfaces", "Velocity");
+
+
 void update_location(const ros_alate::Msg_Yaml &vel_in)
 {
     std::stringstream ss(vel_in);
@@ -76,13 +86,10 @@ int main(int argc, char **argv)
     using ros_alate::QosSettings;
     using ros_alate::ReliabilityQosEnum;
  
-    auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, 10};
+    Node user_api = Node(argc, argv, NODE_NAME, INTERFACES);
+    user_api.set_advertiser("location", interface_type_drone_alt, qos);
 
-    auto const NODE_NAME = std::string("ros_alate_middeware_demo");
-    auto const INTERFACES = std::vector<std::string>{"swarm_interfaces", "alate_interfaces"};
-    auto user_api = Node(argc, argv, NODE_NAME, INTERFACES);
-
-    auto interface_type_vel = InterfaceType("alate_interfaces", "Velocity");
+    sleep(5);
 
     bool br = false;
 
@@ -91,10 +98,6 @@ int main(int argc, char **argv)
 
         update_location(a);
 
-        auto qos = QosSettings{ReliabilityQosEnum::BEST_EFFORT, 10};
-        auto const INTERFACES = std::vector<std::string>{"swarm_interfaces", "alate_interfaces"};
-        auto interface_type_vel = InterfaceType("alate_interfaces", "Velocity");
-
         std::stringstream msg;
         msg << "abort: false\ncamera_angles: " << Rz
         << "\ncamera_elevation: 0\nlocation: "
@@ -102,14 +105,9 @@ int main(int argc, char **argv)
         << "\n\tlatitude: "  << y
         << "\n\tlongitude: " << x;
 
-        ros_alate::InterfaceType interface_type_drone_alt = ros_alate::InterfaceType("swarm_interfaces", "DroneOrientationAndAttitude");
-        ros_alate::QosSettings qos = ros_alate::QosSettings{ros_alate::ReliabilityQosEnum::BEST_EFFORT, 10};
-        user_api.set_advertiser("location", interface_type_drone_alt, qos);
         user_api.advertise("location", msg.str());
     };
 
     user_api.listen("velocity_t", interface_type_vel, qos, UL);
-
-
     user_api.spin();
 }
