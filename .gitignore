@@ -1,6 +1,6 @@
 dev-test/__pycache__
 dev-test/vid/*.jpg
 .vscode/
-aruco_swarm/build
 */build
-integration/location/build/
+*/*/build
+build/
